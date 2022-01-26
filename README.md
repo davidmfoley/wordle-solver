@@ -7,10 +7,13 @@ Written in typescript.
 `yarn start` to start
 
 Enter score like this:
-..Y..G 
 
-'Y' for yellow
-'G' for green
-'.' for no match
+`..Y..G`
 
-Enter 'X' for guessed words that are not in the wordle dictionary.
+`'Y'` for yellow
+
+`'G'` for green
+
+`'.'` for no match
+
+Enter `'X'` for guessed words that are not in the wordle dictionary.

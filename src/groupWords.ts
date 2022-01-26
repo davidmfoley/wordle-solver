@@ -1,13 +1,13 @@
 import { wordPriority } from './wordPriority'
 
 export const groupWords = (
-  minInitialGuessPoolSize: number,
-  ...lists: string[][]
+  wordLists: string[][],
+  minInitialGuessPoolSize = 10
 ) => {
   const byScore: Record<number, string[]> = {}
   const frequencies = {} as Record<string, number>
 
-  lists.forEach((l) =>
+  wordLists.forEach((l) =>
     l.forEach((word) => {
       frequencies[word] = (frequencies[word] || 0) + 1
     })

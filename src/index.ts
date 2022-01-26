@@ -3,12 +3,13 @@ import { allWords } from './allWords'
 import { getScore } from './getScore'
 
 const solver = async () => {
-  const pool = wordPool(...allWords())
+  const pool = wordPool(allWords())
 
   for (let i = 1; i < 6; i++) {
     let guess = pool.getGuess()
 
     console.log(`${pool.remainingCount()} words remaining`)
+    console.log(`My guess is: ${guess}`)
 
     const score = await getScore()
 

@@ -5,7 +5,7 @@ import { allWords } from '../src/allWords'
 
 describe('wordPool', () => {
   test('filtering guess scores', () => {
-    const pool = wordPool(['wince'])
+    const pool = wordPool([['wince']])
 
     pool.applyScore('lions', '.G.Y.')
     expect(pool.remainingCount()).to.eq(1)
@@ -18,7 +18,7 @@ describe('wordPool', () => {
   })
 
   test('integration test with real dicts', () => {
-    const pool = wordPool(...allWords())
+    const pool = wordPool(allWords())
 
     pool.applyScore('raise', '.....')
 

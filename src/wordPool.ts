@@ -1,8 +1,8 @@
 import { groupWords } from './groupWords'
 import { guessFilter } from './guessFilter'
 
-export const wordPool = (...words: string[][]) => {
-  let groups = groupWords(10, ...words)
+export const wordPool = (wordLists: string[][]) => {
+  let groups = groupWords(wordLists)
 
   return {
     getGuess: () => {

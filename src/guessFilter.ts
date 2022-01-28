@@ -16,16 +16,17 @@ export const guessFilter = (guess: string, score: string) => {
   )
 
   return (word: string) => {
-    const chars = word.split('')
+    if (dot.some(({ letter, index }) => word[index] === letter)) return false
+    if (unused.some(({ letter }) => word.includes(letter))) return false
+    if (green.some(({ letter, index }) => word[index] !== letter)) return false
 
-    if (dot.some(({ letter, index }) => chars[index] === letter)) return false
-
-    if (unused.some((l) => chars.includes(l.letter))) return false
-
-    if (green.some(({ letter, index }) => chars[index] !== letter)) return false
-
-    return !yellow.some(
-      ({ letter, index }) => chars[index] === letter || !chars.includes(letter)
+    if (
+      yellow.some(
+        ({ letter, index }) => word[index] === letter || !word.includes(letter)
+      )
     )
+      return false
+
+    return true
   }
 }

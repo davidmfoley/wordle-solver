@@ -1,10 +1,6 @@
 import { wordPriority } from './wordPriority'
 
-export const groupWords = (
-  wordLists: string[][],
-  minInitialGuessPoolSize = 10
-) => {
-  const byScore: Record<number, string[]> = {}
+const wordsWithFrequencies = (wordLists: string[][]) => {
   const frequencies = {} as Record<string, number>
 
   wordLists.forEach((l) =>
@@ -13,24 +9,54 @@ export const groupWords = (
     })
   )
 
-  Object.entries(frequencies).forEach(([word, freq]) => {
-    const basePriority = wordPriority(word)
-    const frequencyModifier = 2 * freq
-    const priority = basePriority - frequencyModifier
+  return Object.entries(frequencies).map(([word, frequency]) => ({
+    word,
+    frequency,
+  }))
+}
 
-    byScore[priority] = byScore[priority] || []
-    byScore[priority].push(word)
-  })
+const calculatePriority = ({
+  word,
+  frequency,
+}: {
+  word: string
+  frequency: number
+}) => {
+  const basePriority = wordPriority(word)
+  const frequencyModifier = 2 * frequency
+  const priority = basePriority - frequencyModifier
+  return { word, priority }
+}
+
+const ensureInitialPoolSizeAtLeast = (
+  minInitialGuessPoolSize = 10,
+  groups: string[][]
+) => {
+  while (groups.length > 1 && groups[0].length < minInitialGuessPoolSize) {
+    groups[1] = [...groups[0], ...groups[1]]
+    groups.shift()
+  }
+}
+
+export const groupWords = (
+  wordLists: string[][],
+  minInitialGuessPoolSize = 10
+) => {
+  const byScore: Record<number, string[]> = {}
+
+  wordsWithFrequencies(wordLists)
+    .map(calculatePriority)
+    .forEach(({ word, priority }) => {
+      byScore[priority] = byScore[priority] || []
+      byScore[priority].push(word)
+    })
 
   const entries = Object.entries(byScore)
   entries.sort(([a], [b]) => Number(a) - Number(b))
 
   const groups = entries.map(([_, words]) => words)
 
-  while (groups.length > 1 && groups[0].length < minInitialGuessPoolSize) {
-    groups[1] = [...groups[0], ...groups[1]]
-    groups.shift()
-  }
+  ensureInitialPoolSizeAtLeast(minInitialGuessPoolSize, groups)
 
   return groups
 }

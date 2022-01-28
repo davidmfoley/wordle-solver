@@ -17,3 +17,5 @@ Enter score like this:
 `'.'` for no match
 
 Enter `'X'` for guessed words that are not in the wordle dictionary.
+
+Enter `'P'` to print remaining words in the pool.

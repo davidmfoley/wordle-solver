@@ -44,5 +44,5 @@ export const guessFilter = (guess: string, score: string) => {
     unusedPredicate(letters),
   ]
 
-  return (word: string) => !predicates.some((p) => !p(word))
+  return (word: string) => predicates.every((p) => p(word))
 }

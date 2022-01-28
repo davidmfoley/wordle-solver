@@ -1,24 +1,31 @@
 export const guessFilter = (guess: string, score: string) => {
+  const scores = score.split('')
+
   const letters = guess
     .split('')
-    .map<[string, number]>((letter, index) => [letter, index])
+    .map((letter, index) => ({ letter, index, score: scores[index] }))
 
-  const scores = score.split('')
-  const wrongPlace = letters.filter(([_, i]) => scores[i] === 'Y')
-  const rightPlace = letters.filter(([_, i]) => scores[i] === 'G')
-  const allUsed = [...wrongPlace, ...rightPlace].map(([l]) => l)
+  const yellow = letters.filter(({ score }) => score === 'Y')
+  const green = letters.filter(({ score }) => score === 'G')
+  const dot = letters.filter(({ score }) => score === '.')
 
-  const unused = letters
-    .filter((_, i) => scores[i] === '.')
-    .map(([l]) => l)
-    .filter((l) => !allUsed.includes(l))
+  const allUsed = [...yellow, ...green]
+
+  const unused = dot.filter(
+    (l) => !allUsed.some(({ letter }) => letter === l.letter)
+  )
 
   return (word: string) => {
-    if (unused.some((l) => word.includes(l))) return false
-    if (rightPlace.some(([l, i]) => word.charAt(i) !== l)) return false
+    const chars = word.split('')
 
-    return !wrongPlace.some(
-      ([l, i]) => word.charAt(i) === l || !word.includes(l)
+    if (dot.some(({ letter, index }) => chars[index] === letter)) return false
+
+    if (unused.some((l) => chars.includes(l.letter))) return false
+
+    if (green.some(({ letter, index }) => chars[index] !== letter)) return false
+
+    return !yellow.some(
+      ({ letter, index }) => chars[index] === letter || !chars.includes(letter)
     )
   }
 }

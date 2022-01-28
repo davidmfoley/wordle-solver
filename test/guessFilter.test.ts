@@ -48,5 +48,21 @@ describe('guessFilter', () => {
       const filter = guessFilter('annal', 'Y.GGG')
       expect(filter('banal')).to.eq(true)
     })
+
+    test('same letter is yellow and dot', () => {
+      const filter = guessFilter('stalk', '..YY.')
+      expect(filter('banal')).to.eq(true)
+      expect(filter('talls')).to.eq(false)
+    })
+
+    test('repeated letters with one non-match exact word', () => {
+      const filter = guessFilter('perry', 'GGG.G')
+      expect(filter('perry')).to.eq(false)
+    })
+
+    test('repeated letters with one non-match candidate', () => {
+      const filter = guessFilter('perry', 'GGG.G')
+      expect(filter('perky')).to.eq(true)
+    })
   })
 })

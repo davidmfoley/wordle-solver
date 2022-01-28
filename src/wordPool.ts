@@ -1,7 +1,10 @@
 import { groupWords } from './groupWords'
 import { guessFilter } from './guessFilter'
 
-export const wordPool = (wordLists: string[][]) => {
+export const wordPool = (
+  wordLists: string[][],
+  getWordFilter = guessFilter
+) => {
   let groups = groupWords(wordLists)
 
   return {
@@ -15,9 +18,11 @@ export const wordPool = (wordLists: string[][]) => {
       groups = groups.filter((g) => g.length)
     },
     remainingCount: () => groups.reduce((sum, group) => sum + group.length, 0),
+    remainingWords: () => groups.reduce((all, group) => all.concat(group), []),
     applyScore: (guess: string, score: string) => {
+      const filter = getWordFilter(guess, score)
       groups = groups
-        .map((words) => words.filter(guessFilter(guess, score)))
+        .map((words) => words.filter(filter))
         .filter((g) => g.length)
     },
     hasWord: (word: string) => groups.some((g) => g.includes(word)),

@@ -15,6 +15,7 @@ describe('wordPool', () => {
 
     pool.applyScore('ainee', '.GG.G')
     expect(pool.remainingCount()).to.eq(1)
+    expect(pool.remainingWords()).to.eql(['wince'])
   })
 
   test('integration test with real dicts', () => {

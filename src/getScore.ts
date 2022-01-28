@@ -2,16 +2,18 @@ import { stdin as input, stdout as output } from 'process'
 import readline from 'readline'
 
 type LetterScore = '.' | 'G' | 'Y'
-type WordScore =
+export type WordScore =
+  | 'P'
   | 'X'
   | `${LetterScore}${LetterScore}${LetterScore}${LetterScore}${LetterScore}`
+
 const rl = readline.createInterface({ input, output })
 
 const getInputFromStdio = (): Promise<string> =>
   new Promise((resolve) => rl.question('How did I do?\n', resolve))
 
 export const validScore = (score: string): score is WordScore =>
-  /^([.YG]{5}|X)$/.test(score)
+  /^([.YG]{5}|[XP])$/.test(score)
 
 export const getScore = async (
   inputScore = getInputFromStdio

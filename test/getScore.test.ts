@@ -33,8 +33,16 @@ describe('getScore', () => {
       expect(validScore('GGGG')).to.eq(false)
     })
 
+    test('bad chars', () => {
+      expect(validScore('...P.')).to.eq(false)
+    })
+
     test('Not in dictionary', () => {
       expect(validScore('X')).to.eq(true)
+    })
+
+    test('Print words', () => {
+      expect(validScore('P')).to.eq(true)
     })
   })
 })
